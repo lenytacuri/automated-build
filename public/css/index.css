@@ -16,8 +16,8 @@
 	overscroll-behavior: none;
 }
 .obstacle {
-	background-color: black;
-	width: 20px;
-	height: 20px;
+	background-color: forestgreen;
+	width: 30px;
+	height: 30px;
 	position: absolute;
 }

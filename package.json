@@ -5,11 +5,16 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "http-server src -o"
+		"dev": "webpack serve --mode development --open",
+		"prebuild": "rm -rf dist",
+		"build": "webpack --mode production",
+		"postbuild": "cp public/index.html dist/index.html && cp -R public/css dist/css"
 	},
 	"author": "Leny Tacuri",
 	"license": "MIT",
-	"devDependencies": {
-		"http-server": "^14.1.1"
+	"dependencies": {
+		"webpack": "^5.89.0",
+		"webpack-cli": "^5.1.4",
+		"webpack-dev-server": "^4.15.1"
 	}
 }
