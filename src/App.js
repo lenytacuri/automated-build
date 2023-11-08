@@ -1,4 +1,16 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+Map.propTypes = {
+	children: PropTypes.node.isRequired,
+	numberOfObstacles: PropTypes.number.isRequired,
+};
+Ball.propTypes = {
+	position: PropTypes.object.isRequired,
+	setPosition: PropTypes.func.isRequired,
+};
+Obstacle.propTypes = {
+	obstaclePosition: PropTypes.object.isRequired,
+};
 
 function App() {
 	const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -35,7 +47,7 @@ function App() {
 	}, []);
 	return (
 		<Map numberOfObstacles={numberOfObstacles}>
-			<Ball position={position} />
+			<Ball position={position} setPosition={setPosition} />
 		</Map>
 	);
 }
@@ -68,7 +80,49 @@ function Map({ children, numberOfObstacles }) {
 		</>
 	);
 }
-function Ball({ position }) {
+function Ball({ position, setPosition }) {
+	useEffect(() => {
+		detectEdgeCollision();
+		const ball = document.getElementById("ball");
+		const ballPosition = ball.getBoundingClientRect();
+		const obstacles = document.getElementsByClassName("obstacle");
+		for (let i = 0; i < obstacles.length; i++) {
+			const obstaclePosition = obstacles[i].getBoundingClientRect();
+			if (
+				ballPosition.x < obstaclePosition.x + obstaclePosition.width &&
+				ballPosition.x + ballPosition.width > obstaclePosition.x &&
+				ballPosition.y < obstaclePosition.y + obstaclePosition.height &&
+				ballPosition.y + ballPosition.height > obstaclePosition.y
+			) {
+				alert("Game Over");
+				setPosition({ x: 0, y: 0 });
+			}
+		}
+	}, [position]);
+	function detectEdgeCollision() {
+		const ball = document.getElementById("ball");
+		const ballPosition = ball.getBoundingClientRect();
+		if (ballPosition.x < 0) {
+			setPosition((prev) => {
+				return { x: prev.x + 1, y: prev.y };
+			});
+		}
+		if (ballPosition.x + ballPosition.width > window.innerWidth) {
+			setPosition((prev) => {
+				return { x: prev.x - 1, y: prev.y };
+			});
+		}
+		if (ballPosition.y < 0) {
+			setPosition((prev) => {
+				return { x: prev.x, y: prev.y + 1 };
+			});
+		}
+		if (ballPosition.y + ballPosition.height > window.innerHeight) {
+			setPosition((prev) => {
+				return { x: prev.x, y: prev.y - 1 };
+			});
+		}
+	}
 	return (
 		<div
 			id="ball"
