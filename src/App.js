@@ -51,7 +51,7 @@ function App() {
 		</Map>
 	);
 }
-function Map({ children, numberOfObstacles }) {
+export function Map({ children, numberOfObstacles }) {
 	const [obstacles, setObstacles] = useState([]);
 	useEffect(() => {
 		const map = generateMap(numberOfObstacles);
@@ -134,6 +134,12 @@ function Ball({ position, setPosition }) {
 	);
 }
 function Obstacle({ obstaclePosition }) {
-	return <div className="obstacle" style={obstaclePosition}></div>;
+	return (
+		<div
+			className="obstacle"
+			data-testid="obstacle"
+			style={obstaclePosition}
+		></div>
+	);
 }
 export default App;
